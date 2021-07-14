@@ -91,5 +91,6 @@ cin.tie(NULL);
   Pair minmax = MinMax2(arr,n-1);
 
   cout<<minmax.max<<" "<<minmax.min;
+
 return 0;
 }
