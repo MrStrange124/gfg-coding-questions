@@ -8,7 +8,7 @@ using namespace std;
 //dynaming programming
 int maxSumOfSubarray(int *arr, int n)
 {
-  int max_so_far = arr[0], i = 1, temp_max = arr[0];
+  int max_so_far = imin, i = 0, temp_max = 0;
   while (i < n)
   {
     temp_max += arr[i];
