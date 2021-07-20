@@ -8,10 +8,11 @@ int main()
 {
   ios_base::sync_with_stdio(false);
   cin.tie(NULL);
-  vector<int> temp{3, 4, 5, 6};
+  vector<int> temp{3, 5};
   // vector<vector<int>> v1;
   // v1.push_back({1, 2});
-
-  // cout << *(temp + 3);
+  cout << temp.front();
+  temp.pop_back();
+  cout << temp.empty();
   return 0;
 }
