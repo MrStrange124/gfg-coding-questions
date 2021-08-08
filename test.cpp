@@ -1,60 +1,24 @@
-// { Driver Code Starts
-// Initial Template for C++
 #include <bits/stdc++.h>
+#define ll long long
 using namespace std;
-
-// } Driver Code Ends
-//User function template for C++
-
-class Solution
+int knapSack(int W, int *wt, int *val, int n)
 {
-public:
-  vector<int> factorial(int N)
-  {
-    vector<int> res;
-    res.push_back(1);
-    int carry = 0, i = 0, temp = 0;
-    while (i++ < N)
-    {
-      for (auto it = res.begin(); it != res.end(); it++)
-      {
-        *it = (*it) * i + carry;
-        carry = 0;
-        if (*it > 9)
-        {
-          carry += *it / 10;
-          *it %= 10;
-        }
-      }
-      if (carry)
-      {
-        temp = carry % 10;
-        res.push_back(temp);
-        carry /= 10;
-      }
-    }
-    reverse(res.begin(), res.end());
-    return res;
-  }
-};
-
-// { Driver Code Starts.
-
+  if (W == 0 || n == 0)
+    return 0;
+  if (wt[n - 1] > W)
+    return knapSack(W, wt, val, n - 1);
+  else
+    return max(val[n - 1] + knapSack(W - wt[n - 1], wt, val, n - 1), knapSack(W, wt, val, n - 1));
+}
 int main()
 {
-  int t;
-  cin >> t;
-  while (t--)
-  {
-    int N;
-    cin >> N;
-    Solution ob;
-    vector<int> result = ob.factorial(N);
-    for (int i = 0; i < result.size(); ++i)
-    {
-      cout << result[i];
-    }
-    cout << endl;
-  }
+  ios_base::sync_with_stdio(false);
+  cin.tie(NULL);
+  int val[] = {60, 100, 120};
+  int wt[] = {10, 20, 30};
+  int W = 50;
+  int n = sizeof(val) / sizeof(val[0]);
+
+  cout << knapSack(W, wt, val, n);
   return 0;
 }
