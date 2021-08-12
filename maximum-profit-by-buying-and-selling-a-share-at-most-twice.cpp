@@ -23,12 +23,29 @@ int maxProfit(int arr[], int n)
     }
     return mx;
 }
+int maxProfit2(int arr[], int n)
+{
+    int profit[n], mx = arr[n - 1];
+    memset(profit, 0, sizeof(profit));
+    for (int i = n - 2; i >= 0; i--)
+    {
+        mx = max(mx, arr[i]);
+        profit[i] = max(profit[i + 1], mx - arr[i]);
+    }
+    int mn = arr[0];
+    for (int i = 1; i < n; i++)
+    {
+        mn = min(mn, arr[i]);
+        profit[i] = max(profit[i - 1], profit[i] + arr[i] - mn);
+    }
+    return profit[n - 1];
+}
 int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
     int arr[] = {10, 22, 5, 75, 65, 80};
     int n = sizeof(arr) / sizeof(arr[0]);
-    cout << maxProfit(arr, n);
+    cout << maxProfit2(arr, n);
     return 0;
 }
