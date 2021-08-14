@@ -14,20 +14,15 @@ public:
         memset(dp, 0, sizeof(dp));
         for (int i = x; i <= n; i += x)
             dp[i] = dp[i - x] + 1;
-        if (y <= n)
-        {
-            dp[y] = 1;
-            for (int i = y; i <= n; i++)
-                if (dp[i - y] > 1)
-                    dp[i] = max(dp[i], dp[i - y] + 1);
-        }
-        if (z <= n)
-        {
-            dp[z] = 1;
-            for (int i = z; i <= n; i++)
-                if (dp[i - z] > 0)
-                    dp[i] = max(dp[i], dp[i - z] + 1);
-        }
+
+        for (int i = y; i <= n; i++)
+            if (dp[i - y] || i == y)
+                dp[i] = max(dp[i], dp[i - y] + 1);
+
+        for (int i = z; i <= n; i++)
+            if (dp[i - z] || i == z)
+                dp[i] = max(dp[i], dp[i - z] + 1);
+
         return dp[n];
     }
 };
