@@ -10,6 +10,6 @@ int main()
   string s = "0000";
   int temp = mod + mod;
   // s.erase(s.begin() + 2);
-  cout << temp;
+  cout << __builtin_popcount(15);
   return 0;
 }
