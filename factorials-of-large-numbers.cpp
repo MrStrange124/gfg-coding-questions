@@ -13,25 +13,29 @@ public:
   {
     vector<int> res;
     res.push_back(1);
-    int carry = 0, i = 0, temp = 0;
-    while (i++ < N)
+    int carry = 0, i = 2, temp = 0;
+    while (i <= N)
     {
-      for (auto it = res.begin(); it != res.end(); it++)
+      for (int it = 0; it < res.size(); it++)
       {
-        *it = (*it) * i + carry;
-        carry = 0;
-        if (*it > 9)
+        temp = res[it] * i + carry;
+        if (temp < 10)
         {
-          carry += *it / 10;
-          *it %= 10;
+          res[it] = temp;
+          carry = 0;
+        }
+        else
+        {
+          res[it] = temp % 10;
+          carry = temp / 10;
         }
       }
-      if (carry)
+      while (carry)
       {
-        temp = carry % 10;
-        res.push_back(temp);
+        res.push_back(carry % 10);
         carry /= 10;
       }
+      i++;
     }
     reverse(res.begin(), res.end());
     return res;
