@@ -5,45 +5,24 @@ using namespace std;
 
 int minJumps(int *arr, int n)
 {
-	int i = 0, j, step = 0, tmax = 0, k, l;
-	while (i < n - 1)
+	int step = 0, p = n - 1, temp;
+	while (p != 0)
 	{
-		tmax = 0;
-		for (j = i + 1, k = 1; j <= i + arr[i]; j++, k++)
+		temp = -1;
+		for (int i = p - 1; i >= 0; i--)
 		{
-			if (tmax < arr[j] + k && arr[j] != 0)
-			{
-				tmax = arr[j] + k;
-				l = k;
-			}
+			if ((p - i) <= arr[i])
+				temp = i;
 		}
-		if (tmax == 0)
-			return -1;
-		i += l;
+		if (temp == -1)
+		{
+			step = -1;
+			break;
+		}
+		p = temp;
 		step++;
 	}
 	return step;
-}
-int minJumps1(int *arr, int n)
-{
-	int *jumps = new int[n];
-	int i, j;
-	jumps[0] = 0;
-	if (arr[0] == 0)
-		return -1;
-	for (i = 1; i < n; i++)
-	{
-		jumps[i] = INT_MAX;
-		for (j = 0; j < i; j++)
-		{
-			if (i <= j + arr[j] && jumps[j] != INT_MAX)
-			{
-				jumps[i] = min(jumps[i], jumps[j] + 1);
-				break;
-			}
-		}
-	}
-	return jumps[n - 1];
 }
 int main()
 {
@@ -55,6 +34,6 @@ int main()
 	while (i < n)
 		cin >> arr[i++];
 	// cout << minJumps(arr, n);
-	cout << minJumps1(arr, n);
+	cout << minJumps(arr, n);
 	return 0;
 }
