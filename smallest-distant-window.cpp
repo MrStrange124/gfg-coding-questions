@@ -8,46 +8,33 @@ class Solution
 public:
     string findSubString(string str)
     {
-        map<char, int> m;
+        map<char, int> m, t;
         for (int i = 0; i < str.length(); i++)
             m[str[i]]++;
-
-        int i = 0, j = str.length() - 1;
-        for (; i < j; i++)
+        int i = 0, j = 0, k = m.size(), count = 0;
+        string ans = str;
+        while (j < str.length())
         {
-            if (m[str[i]] == 1)
-                break;
-            m[str[i]]--;
+            if (t[str[j]] == 0)
+                count++;
+            t[str[j]]++;
+            if (count == k)
+            {
+                while (i < j)
+                {
+                    if (t[str[i]] == 1)
+                        break;
+                    t[str[i++]]--;
+                }
+                if (j - i + 1 < ans.length())
+                    ans = str.substr(i, j - i + 1);
+                count--;
+                t[str[i]]--;
+                i++;
+            }
+            j++;
         }
-        for (; j > i; j--)
-        {
-            if (m[str[j]] == 1)
-                break;
-            m[str[j]]--;
-        }
-        string temp = str.substr(i, j - i + 1);
-        for (auto t : m)
-            m[t.first] = 0;
-
-        for (int i = 0; i < str.length(); i++)
-            m[str[i]]++;
-
-        i = 0, j = str.length() - 1;
-        for (; j > i; j--)
-        {
-            if (m[str[j]] == 1)
-                break;
-            m[str[j]]--;
-        }
-        for (; i < j; i++)
-        {
-            if (m[str[i]] == 1)
-                break;
-            m[str[i]]--;
-        }
-        if (temp.length() <= j - i + 1)
-            return temp;
-        return str.substr(i, j - i + 1);
+        return ans;
     }
 };
 
