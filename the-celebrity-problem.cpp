@@ -13,19 +13,22 @@ public:
     //Function to find if there is a celebrity in the party or not.
     int celebrity(vector<vector<int>> &M, int n)
     {
-        int j;
-        for (int i = 0; i < n; i++)
+        int i = 0, j = n - 1;
+        while (i < j)
         {
-            for (j = 0; j < n; j++)
-            {
-                if (M[i][j] == 1)
-                    break;
-            }
-            if (j == n)
-                return i;
+            if (M[i][j])
+                i++;
+            else
+                j--;
         }
-
-        return -1;
+        for (int k = 0; k < n; k++)
+        {
+            if (M[i][k])
+                return -1;
+            else if (!M[k][i] && i != k)
+                return -1;
+        }
+        return i;
     }
 };
 
