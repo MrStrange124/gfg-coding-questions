@@ -10,38 +10,42 @@ class Solution
 public:
     // arr[] : int input array of integers
     // k : the quadruple sum required
-    vector<vector<int>> fourSum(vector<int> &arr, int k)
+    vector<vector<int>> fourSum(vector<int> &arr, int q)
     {
         int n = arr.size();
         vector<vector<int>> ans;
         sort(arr.begin(), arr.end());
-        for (auto i : arr)
-            cout << i << " ";
-        cout << endl;
+        int k, l, sum;
+        vector<int> temp;
         for (int i = 0; i < n - 3; i++)
         {
+            temp.push_back(arr[i]);
             for (int j = i + 1; j < n - 2; j++)
             {
-                int l = j + 1, m = n - 1;
-                while (l < m)
+                temp.push_back(arr[j]);
+                k = j + 1;
+                l = n - 1;
+                sum = arr[i] + arr[j];
+                while (k < l)
                 {
-                    if (arr[i] + arr[j] + arr[l] + arr[m] == k)
+                    if (sum + arr[k] + arr[l] == q)
                     {
-                        vector<int> v;
-                        v.push_back(arr[i]);
-                        v.push_back(arr[j]);
-                        v.push_back(arr[l]);
-                        v.push_back(arr[m]);
-                        ans.push_back(v);
-                        l++;
-                        m--;
+                        temp.push_back(arr[k]);
+                        temp.push_back(arr[l]);
+                        if (ans.empty() || ans.back() != temp)
+                            ans.push_back(temp);
+                        temp.pop_back();
+                        temp.pop_back();
+                        k++;
                     }
-                    else if (arr[i] + arr[j] + arr[l] + arr[m] < k)
-                        l++;
+                    else if (sum + arr[k] + arr[l] > q)
+                        l--;
                     else
-                        m--;
+                        k++;
                 }
+                temp.pop_back();
             }
+            temp.pop_back();
         }
         return ans;
     }
