@@ -3,6 +3,8 @@
 using namespace std;
 int main()
 {
-  cout << 5 * 5;
+  list<int> l = {1, 2, 3};
+  auto i = l.end();
+  cout << *i;
   return 0;
 }
