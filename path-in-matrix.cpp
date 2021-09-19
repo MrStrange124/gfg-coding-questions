@@ -14,17 +14,17 @@ class Solution
 public:
     int soln(int r, int c, int sum, vector<vector<int>> &Matrix, vector<vector<int>> &dp)
     {
-        if (r == end)
+        if (r >= end || c >= end || c < 0)
             return sum;
         if (dp[r][c] != -1)
             return dp[r][c];
-        int a = soln(r + 1, c, sum + Matrix[r][c], Matrix, dp), b = 0;
-        b = a;
-        if (c - 1 >= 0)
-            a = max(soln(r + 1, c - 1, sum + Matrix[r][c], Matrix, dp), a);
-        if (c + 1 < end)
-            b = max(soln(r + 1, c + 1, sum + Matrix[r][c], Matrix, dp), b);
-        return max(a, b);
+        int a = soln(r + 1, c, sum, Matrix, dp);
+        if (a != 0)
+        {
+            a = max(soln(r + 1, c - 1, sum, Matrix, dp), a);
+            a = max(soln(r + 1, c + 1, sum, Matrix, dp), a);
+        }
+        return dp[r][c] = a + Matrix[r][c];
     }
     int maximumPath(int N, vector<vector<int>> Matrix)
     {
