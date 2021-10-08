@@ -1,7 +1,6 @@
 // { Driver Code Starts
 #include <bits/stdc++.h>
 using namespace std;
-#define MAX_HEIGHT 100000
 
 // Tree Node
 struct Node
@@ -53,14 +52,14 @@ Node *buildTree(string str)
         Node *currNode = queue.front();
         queue.pop();
 
-        // Get the current node's value from the string
+        // Get the current Node's value from the string
         string currVal = ip[i];
 
         // If the left child is not null
         if (currVal != "N")
         {
 
-            // Create the left child for the current node
+            // Create the left child for the current Node
             currNode->left = newNode(stoi(currVal));
 
             // Push it to the queue
@@ -77,7 +76,7 @@ Node *buildTree(string str)
         if (currVal != "N")
         {
 
-            // Create the right child for the current node
+            // Create the right child for the current Node
             currNode->right = newNode(stoi(currVal));
 
             // Push it to the queue
@@ -90,98 +89,91 @@ Node *buildTree(string str)
 }
 
 // } Driver Code Ends
-/* A binary tree Node
+/* Structure for tree and linked list
+
 struct Node
 {
     int data;
-    Node* left, * right;
-}; */
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};
+ */
 
+// This function should return head to the DLL
 class Solution
 {
 public:
-    void printLeaves(Node *root, vector<int> &a)
+    //Function to convert binary tree to doubly linked list and return it.
+    void fixPrevPtr(Node *root)
     {
-        if (root == NULL)
-            return;
+        static Node *pre = NULL;
 
-        printLeaves(root->left, a);
-
-        // Print it if it is a leaf node
-        if (!(root->left) && !(root->right))
-            a.push_back(root->data);
-
-        printLeaves(root->right, a);
-    }
-    void printBoundaryLeft(Node *root, vector<int> &a)
-    {
-        if (root == NULL)
-            return;
-
-        if (root->left)
+        if (root != NULL)
         {
-            a.push_back(root->data);
-            printBoundaryLeft(root->left, a);
-        }
-        else if (root->right)
-        {
-            a.push_back(root->data);
-            printBoundaryLeft(root->right, a);
+            fixPrevPtr(root->left);
+            root->left = pre;
+            pre = root;
+            fixPrevPtr(root->right);
         }
     }
-    void printBoundaryRight(Node *root, vector<int> &a)
+    Node *fixNextPtr(Node *root)
     {
-        if (root == NULL)
-            return;
+        Node *prev = NULL;
 
-        if (root->right)
+        while (root && root->right != NULL)
+            root = root->right;
+
+        while (root && root->left != NULL)
         {
-            printBoundaryRight(root->right, a);
-            a.push_back(root->data);
+            prev = root;
+            root = root->left;
+            root->right = prev;
         }
-        else if (root->left)
-        {
-            printBoundaryRight(root->left, a);
-            a.push_back(root->data);
-        }
+        return (root);
     }
-    vector<int> printBoundary(Node *root)
+    Node *bToDLL(Node *root)
     {
-        vector<int> a;
-        if (root == NULL)
-            return a;
-        a.push_back(root->data);
-
-        printBoundaryLeft(root->left, a);
-
-        printLeaves(root->left, a);
-        printLeaves(root->right, a);
-
-        printBoundaryRight(root->right, a);
-        return a;
+        fixPrevPtr(root);
+        return fixNextPtr(root);
     }
 };
 
 // { Driver Code Starts.
 
-/* Driver program to test size function*/
+/* Function to print nodes in a given doubly linked list */
 
+void inorder(Node *root)
+{
+    if (root != NULL)
+    {
+        inorder(root->left);
+        cout << root->data;
+        inorder(root->right);
+    }
+}
+
+/* Driver program to test size function*/
 int main()
 {
     int t;
-    string tc;
-    getline(cin, tc);
-    t = stoi(tc);
+    cin >> t;
+    getchar();
+
     while (t--)
     {
-        string s, ch;
-        getline(cin, s);
-        Node *root = buildTree(s);
+        string inp;
+        getline(cin, inp);
+        Node *root = buildTree(inp);
+
         Solution ob;
-        vector<int> res = ob.printBoundary(root);
-        for (int i : res)
-            cout << i << " ";
-        cout << endl;
+        Node *head = ob.bToDLL(root);
     }
     return 0;
-} // } Driver Code Ends
+}
+
+// } Driver Code Ends
